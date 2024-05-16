@@ -1,41 +1,81 @@
-from tkinter import *
+from tkinter import*
 from librerias import Eleccion
-ventana=Tk()
+
+def pantalla():
+    ventana=Tk()
  
-ventana.title("Aventura 0.01")#Nombre de ventana
-ventana.geometry("1000x500")#tamano al abrirce
+    ventana.title("Aventura 0.01")# Nombre de ventana
+    ventana.geometry("1000x500")# Tamano al abrirce
 
-ventana.iconbitmap("C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\escudo.ico")# Temporal-icono
+    ventana.iconbitmap("C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\escudo.ico")# Temporal-icono
+    
+    imagen_fondo = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\pared.png")
+    primer_fondo = Label(ventana, image=imagen_fondo)
+    primer_fondo.place(x=0, y=0)
+    
+    jugador=Eleccion(ventana)# _________________________________________________Instancia de la clase Elección_____________________________________________________________
 
-f1="pared2.png"#---->def despues
-f2="cielo.png"#-->def despues
-f3="noche.png"#-->def despues
-imagen_fondo = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\{f2}") #creo un fondo/solo funciona en este dispocitivo <-X
-Fondo = Label(ventana, image=imagen_fondo) #<-------------X
-Fondo.place(x=0, y=0)
+    # Eleccion de fondo
+    op=StringVar()
+    elecciones={"pared","cielo","noche"} 
+    op.set("Fondos")
+    fondos=OptionMenu(ventana,op,*elecciones,command= lambda fon:jugador.Fondo(fon,primer_fondo))
+    fondos.place(x=895,y=8)
 
-jugador=Eleccion()# Instancia 
+    #-------------------------------------------------------------------------------Trasfondo
+    iniciacion0_0=Label(ventana,text="- En tierras lejanas donde los héroes y monstruos abundan, un grupo de amigos se reúne\ncon el deseo de ser aventureros. Explorando los bosques y derrotando monstruos.       ",bg="black",fg="white")
+    iniciacion0_0.place(x=255,y=360)
+    cont1=Button(ventana,text="Continuar >>>",bg="orange",fg="white",command= lambda: jugador.tr(iniciacion0_0,cont1))
+    cont1.place(x=650,y=450)
 
-iniciacion1=Label(ventana,text="> Elija a su personaje aventurero (No podras cambiarlo despues).",bg="black",fg="white") # <--- eliminar esto despues de apretar aceptar
-iniciacion1.place(x=255,y=110)
-iniciacion2=Label(ventana,text="- Indique su nombre aventurero (No podras cambiarlo despues).",bg="black",fg="white") # <--- eliminar esto despues de apretar aceptar
-iniciacion2.place(x=255,y=360)
-nombre=Entry(ventana) #<----- trabajar con nombre(e)
-nombre.place(x=410,y=450)
-nom=Button(ventana,text="aceptar",bg="orange",fg="white",command=jugador.Nombre) #<----- darle propocito
-nom.place(x=520,y=448)
 
-op=StringVar()
-elecciones={
-  "Fondo 1":"pared2.png",
-  "Fondo 2":"cielo.png",
-  "Fondo 3":"noche.png"
-  }
-op.set("Fondos")
-fondos=OptionMenu(ventana,op,*elecciones)
-fondos.place(x=895,y=8)
+         #  <------------------------------------------------------------------------------------------------X
 
-ayuda=Button(text="Ayuda")
-ayuda.place(x=845,y=11)
+    # Instrucciones iniciales
+    iniciacion1_0=Label(ventana,text="- Elija a su personaje aventurero (No podras cambiarlo despues).",bg="black",fg="white")
+    iniciacion1_0.place(x=255,y=70)
+    iniciacion1_1=Label(ventana,text="- Indique su nombre aventurero (No podras cambiarlo despues).",bg="black",fg="white")
+    iniciacion1_1.place(x=255,y=360) 
 
-ventana.mainloop()
+    # Ingreso del nombre:
+    nombre=Entry(ventana) 
+    nombre.place(x=410,y=450)
+    nom=Button(ventana,text="aceptar",bg="orange",fg="white",command=lambda:jugador.Nombre(nombre,iniciacion1_1,nombre,nom))
+    nom.place(x=520,y=448)
+
+    # eleccion de personaje:
+    des_v=" Vida:  90                                          Vida:  120                                       Vida:  100"
+    des_f="  Fuerza:  15                                      Fuerza:  50                                     Fuerza:  25"
+    des_m="Mana:  25                                        Mana:  5                                        Mana:  10"
+    descripcion=Label(ventana,text=f"{des_v}\n{des_f}\n{des_m}",bg="black",fg="white")
+    descripcion.place(x=255,y=235)
+    mago=Button(ventana,text= "Mago",bg="orange",fg="white",command= lambda: jugador.Personaje(iniciacion1_0,descripcion,mago,caballero,arquero,magico,fuerte,velos,1))
+    mago.place(x=315,y=300)
+    ima_mago = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\Maga1.png") 
+    magico = Label(ventana, image=ima_mago)
+    magico.place(x=270,y=100)
+    caballero=Button(ventana,text= "Caballero",bg="orange",fg="white",command= lambda: jugador.Personaje(iniciacion1_0,descripcion,mago,caballero,arquero,magico,fuerte,velos,2))
+    caballero.place(x=470,y=300)
+    ima_caba = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\caballero1.png") 
+    fuerte = Label(ventana, image=ima_caba)
+    fuerte.place(x=435,y=100)
+    arquero=Button(ventana,text= "Arquero",bg="orange",fg="white",command= lambda: jugador.Personaje(iniciacion1_0,descripcion,mago,caballero,arquero,magico,fuerte,velos,3))
+    arquero.place(x=635,y=300)
+    ima_arqu = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\Arquero1.png") 
+    velos = Label(ventana, image=ima_arqu)
+    velos.place(x=600,y=100)
+
+    #ima_arqu = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\bosque.png") 
+    #velos = Label(ventana, image=ima_arqu,bg="black")
+    #velos.place(x=249,y=64)
+
+
+
+   # Boton de ayuda
+    ayuda=Button(text="Ayuda")
+    ayuda.place(x=845,y=11)
+
+    ventana.mainloop()
+
+if __name__ == "__main__":
+    pantalla()
