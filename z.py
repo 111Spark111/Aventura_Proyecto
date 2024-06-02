@@ -30,6 +30,7 @@ class Z:
         self.bot2.place(x=45, y=65)
 
 
+
 class T(Z):
     def __init__(self,ven,q,w,e):
         super 

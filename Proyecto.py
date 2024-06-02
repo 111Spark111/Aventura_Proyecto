@@ -4,22 +4,21 @@ from librerias import*
 def pantalla():
     ventana=Tk()
  
-    ventana.title("Aventura 0.01")# Nombre de ventana
+    ventana.title("Aventura 0.00")# Nombre de ventana
     ventana.geometry("1000x500")# Tamaño al abrirce
 
-    ventana.iconbitmap("C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\escudo.ico")# Temporal-icono
+    ventana.iconbitmap("C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\escudo.ico")# icono (Hacer para otros dispocitivos)
     
     List_fondos=Fondo(ventana)# __________________________________________________Instancia de la clase Fondo______________________________________________________________
 
     # Eleccion de fondo
     op=StringVar()
-    elecciones={"Pared","Cielo","Noche"} 
+    elecciones={"Pared","Cielo","Noche"}
     op.set("Fondos")
     fondos=OptionMenu(ventana,op,*elecciones,command= lambda fon:List_fondos.fondos(fon))
     fondos.place(x=895,y=8)
     
     Botones=Eleccion(ventana)# _________________________________________________Instancia de la clase Elección_____________________________________________________________
-
 
     #Trasfondo
     iniciacion0_0=Label(ventana,text="- En tierras lejanas donde los héroes y monstruos abundan, un grupo de amigos se reúne\ncon el deseo de ser aventureros. Explorando los bosques y derrotando monstruos.       ",bg="black",fg="white")
