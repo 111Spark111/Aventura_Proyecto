@@ -8,7 +8,8 @@ def mai():
     d="red"
     x=Label(ven,text=y,bg=d)
     x.place(x=0,y=0)
-    b=Button(ven,text="x",command= lambda: cam(y,d))
+    tt=PhotoImage(file="C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\poci1.png")
+    b=Button(ven,image=tt,command= lambda: cam(y,d))
     b.place(x=0,y=30)
     t=Button(ven,text="0",command= lambda: zero(y))
     t.place(x=0,y=60)
