@@ -1,4 +1,31 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+
+# Crear la ventana principal
+root = tk.Tk()
+root.title("Ejemplo de Pestañas con Tkinter")
+
+# Crear un widget Notebook
+notebook = ttk.Notebook(root)
+notebook.pack(pady=10, expand=True)
+
+# Crear dos frames que serán las pestañas
+tab1 = ttk.Frame(notebook)
+tab2 = ttk.Frame(notebook)
+
+# Añadir los frames al Notebook como pestañas
+notebook.add(tab1, text='Pestaña 1')
+notebook.add(tab2, text='Pestaña 2')
+
+# Añadir contenido a las pestañas
+label1 = tk.Label(tab1, text="Contenido de la Pestaña 1")
+label1.pack(pady=20, padx=20)
+
+label2 = tk.Label(tab2, text="Contenido de la Pestaña 2")
+label2.pack(pady=20, padx=20)
+
+root.mainloop()
+"""from tkinter import *
 from z import*
 
 def mai():
@@ -27,3 +54,4 @@ def mai():
 
 if __name__ == "__main__":
     mai()
+    """

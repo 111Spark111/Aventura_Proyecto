@@ -1,5 +1,6 @@
 from tkinter import*
 from librerias import*
+from lib2 import*
 
 def pantalla():
     ventana=Tk()
@@ -29,9 +30,9 @@ def pantalla():
     ima_T_0 = PhotoImage(file=Botones.imagen("T_0")) 
     tras_0 = Label(ventana, image=ima_T_0,bg="black")
     tras_0.place(x=249,y=64)
-
+    guia=Ayuda(ventana)# _________________________________________________Instancia de la clase Ayuda_____________________________________________________________
    # Boton de ayuda
-    ayuda=Button(text="Ayuda")
+    ayuda=Button(text="Ayuda",command= lambda: guia.la_guia())
     ayuda.place(x=845,y=11)
 
     ventana.mainloop()

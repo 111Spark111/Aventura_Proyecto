@@ -7,6 +7,10 @@ class Z:
         self.eleccion = ""
         self.bobo = None
 
+
+    def atras1(self,x):
+        for e in x:
+            e.destroy()
     def btn(self, bot, b,xx,yy):
         self.destructor(bot, b)
 
