@@ -2,73 +2,300 @@
 from tkinter import *
 import random
 
-class Batallas():                      # En proseso
-
-  def __init__(self,ventana,vida,fuerza,mana,oro):
-    self.ventana=ventana
-    self.vida=vida
-    self.fuerza=fuerza
-    self.mana=mana
-    self.oro=oro
-    self.estadisticas=Label(self.ventana,text="",bg="black",fg="white")
-    self.estadisticas.place(x=255,y=460)
- 
-  def enemigo_ram(self):
-    enemigo_aleatorio = random.randint(1, 100)
-    if 1 <= enemigo_aleatorio <=20:
-      return "slime1"
-    elif 21 <= enemigo_aleatorio <=40:
-      return "slime2"
-    elif 41 <=enemigo_aleatorio <=60:
-      return "slime3"
-    elif 61 <= enemigo_aleatorio <=75:
-      return "lobo"
-    elif 76 <= enemigo_aleatorio <=90:
-      return "lobo2"
-    else:
-      return "duende1"
-
-  def Actualiza_Est(self):
-    #if self.vida ==0:
-    #  self.g_o=PhotoImage(file="C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\T_0.png")
-    #  self.fin = Label(self.ventana, image=self.g_o, bg="red")
-    #  self.fin.place(x=249,y=64)
-    #  self.estadisticas.config(text=f"Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}") 
-    #else:
-    self.estadisticas.config(text=f"Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}") 
-
-
-class Vendedor():                      # Ignorar de mientras <----------------X
-  def __init__(self,ventana,oro):
-    self.ventana=ventana
-    self.oro=oro
-    self.vend = PhotoImage(file="C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\vendedor.png")
-    self.vende = Label(self.ventana, image=self.vende, bg="black")
-    self.vende.place(x=260,y=150)
-
-  def comprar(self):
-    self.oro
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class Eleccion():
+class Elección():
   
   def __init__(self,ventana):
 
     self.ventana=ventana
     self.jugador="" # str vacio que despues tomara el nombre de la imagen del personaje
-    self.per=False  # Estos dos comprobaran si ya se eligio un nombre y un personaje
+    self.per=False  # Estos dos comprobaran si ya se eligio un nombre y un personaje / per tambien se usara para los ataques turnados
     self.nom=False
     
     self.vida=0    # son las estadisticas que se modificaran
     self.fuerza=0
     self.mana=0
     self.oro=10
-    self.color_j="Green" # Colñor del contorno del enemigo y del jugador
-    self.color_e="Green"
+    self.color_j="Green" # Color del contorno del jugador
+    self.color_e="Green"# Color del contorno del enemigo
     self.entorno=PhotoImage(file="") #cambia el ambiente
     self.dialogo=Label(self.ventana,text="",bg="black",fg="white") # cambia el dialogo
     self.dialogo.place(x=255,y=360)
-    self.el_nombre=""
+    self.estadisticas=Label(self.ventana,text="",bg="black",fg="white")
+    self.estadisticas.place(x=255,y=460)
+    self.el_nombre=""#nombre del jugador
+    self.enemigo=""# con que enemigo te enfrentas
+    self.vida_enemigo=0# vida enemiga
+
+  def batalla(self,q,w): # Aqui se inicia una batalla con un enemigo random
+    self.destructor(q,w)
+
+    atac=Button(self.ventana,text="Atacar",bg="red",fg="white",command= lambda: self.ataque(atac,poci,escape,ju,ene))
+    atac.place(x=300,y=405) 
+    poci=Button(self.ventana,text="Pociones",bg="green",fg="white")# <----------------comando X
+    poci.place(x=415,y=405)
+    escape=Button(self.ventana,text="Escapar",bg="blue",fg="white",command= lambda: self.escapar(atac,poci,escape,ju,ene))# <----------------comando X
+    escape.place(x=530,y=405)
+
+    self.entorno.config(file=self.imagen("bosque"))
+
+    self.juga = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\{self.jugador}.png")
+    ju= Label(self.ventana,image=self.juga, bg=self.color_j)
+    ju.place(x=605,y=150)
+    
+    self.color_e="green"
+    self.enemigo=self.enemigo_ram()
+
+    self.sl_1 = PhotoImage(file=self.imagen(self.enemigo))
+    ene= Label(self.ventana,image=self.sl_1, bg=self.color_e)
+    ene.place(x=260,y=150)
+
+    self.dialogo.config(text=f"- Un {self.enemigo} se aproxima con hostilidad. Pelea o huye.")
+
+  def ataque(self,q,w,e,ju,ene):
+    self.destructor(q,w,e)
+    at0=self.fuerza/2#<--------------- daño del ataque
+    self.A0 = PhotoImage(file=self.imagen("ataque0"))
+    puños=Button(self.ventana,image=self.A0,bg="red",command= lambda: self.puño(self.enemigo,at0,ju,ene))
+    puños.place(x=280,y=390)
+    atra4=Button(self.ventana,text="Atras",bg="orange",fg="white",command= lambda: self.atras_batallas(puños,atra4,arm_p,ju,ene))# <----------------comando X
+    atra4.place(x=710,y=455)
+
+    if self.jugador=="Maga2":
+      self.A01 = PhotoImage(file=self.imagen("ataque01"))
+      at1=30 #<--------------- daño del ataque
+      arm_p=Button(self.ventana,image=self.A01,bg="red",command= lambda: self.daño_tur(self.enemigo,at1,ju,ene))
+      arm_p.place(x=330,y=390)
+    elif self.jugador=="Caballero2":
+      self.A01 = PhotoImage(file=self.imagen("ataque02"))
+      at2=self.fuerza#<--------------- daño del ataque
+      arm_p=Button(self.ventana,image=self.A01,bg="red",command= lambda: self.daño_tur(self.enemigo,at2,ju,ene))
+      arm_p.place(x=330,y=390)
+    else:
+      self.A01 = PhotoImage(file=self.imagen("ataque03"))
+      at3=self.fuerza+self.mana#<--------------- daño del ataque
+      arm_p=Button(self.ventana,image=self.A01,bg="red",command= lambda: self.daño_tur(self.enemigo,at3,ju,ene))
+      arm_p.place(x=330,y=390)
+    # <----------------------------------------------------------agregar las armas X
+  def atras_batallas(self,q,w,e,ju,ene):
+    self.destructor(q,w,e)
+
+    atac=Button(self.ventana,text="Atacar",bg="red",fg="white",command= lambda: self.ataque(atac,poci,escape,ju,ene))
+    atac.place(x=300,y=405) 
+    poci=Button(self.ventana,text="Pociones",bg="green",fg="white")# <----------------comando X Copia de ariba
+    poci.place(x=415,y=405)
+    escape=Button(self.ventana,text="Escapar",bg="blue",fg="white",command= lambda: self.escapar(atac,poci,escape,ju,ene))# <----------------comando X Copia de ariba
+    escape.place(x=530,y=405)
+  #----------------------------------------------------------------------------------------------------------------------------------------
+  def escapar(self,q,w,e,ju,ene): # pocibilidades de escapar o como
+    ram=random.randint(1, 10)
+    if self.enemigo=="slime azul" or self.enemigo=="slime rojo":
+      self.intermedio(q,w,e,ju,ene)
+    elif self.enemigo=="slime verde" and ram<=7:
+      self.intermedio(q,w,e,ju,ene)
+    elif (self.enemigo=="lobo" or self.enemigo=="lobo alfa") and ram<=5:
+      self.intermedio(q,w,e,ju,ene)
+    elif self.enemigo=="duende" and self.oro > 0:
+      self.m_oro(0,3)
+      self.intermedio(q,w,e,ju,ene)
+    else:
+      self.daño(self.enemigo,0)
+      
+  #----------------------------------------------------------------------------------------------------------------------------------------
+  def daño_tur(self,enemi,golpe,ju,ene):
+    if self.jugador=="Maga2" and self.per:
+      if self.mana<=0:
+        pass
+      else:
+        self.per=False
+        self.m_mana(0,5)
+        self.m_vida(1,5)
+        self.daño(enemi,golpe)
+    elif self.jugador=="Caballero2" and self.per:
+      self.per=False
+      self.daño(enemi,golpe)
+    elif self.jugador=="Arquero2" and self.per:
+      self.per=False
+      self.m_mana(0,2)
+      self.daño(enemi,golpe)
+    elif self.per==False:
+      pass
+    self.color_v(ju,ene)
+
+  def color_v(self,ju,ene):
+    if self.jugador=="Maga2":
+      if self.vida<=30:
+        self.color_j="red"
+      elif self.vida<=70:
+        self.color_j="yellow"
+    elif self.jugador=="Caballero2":
+      if self.vida<=40:
+        self.color_j="red"
+      elif self.vida<=90:
+        self.color_j="yellow"
+    elif self.jugador=="Arquero2":
+      if self.vida<=25:
+        self.color_j="red"
+      elif self.vida<=60:
+        self.color_j="yellow"
+    else:
+      pass
+    
+    if self.vida_enemigo<=69:
+      self.color_e="yellow"
+    elif self.vida_enemigo<=30:
+      self.color_e="red"
+    else:
+      pass
+
+    ju.config(bg=self.color_j)
+    ene.config(bg=self.color_e)
+
+  def m_oro(self,mm,o):# suma o reta oro
+    comp2=self.oro-o
+    if mm==1: # suma oro
+      self.oro+=o
+    else: # resta oro
+      if comp2<=0:
+        self.oro=0
+      else:
+        self.oro-=o
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
+
+  def m_vida(self,mm,v):# suma o reta vida
+    comp1=self.vida+v
+    comp2=self.vida-v
+    if mm==1: # suma vida
+      if self.jugador=="Maga2":
+        if comp1<=90:
+          self.vida+=v
+        else:
+          self.vida=90
+      elif self.jugador=="Caballero2":
+        if comp1<=120:
+          self.vida+=v
+        else:
+          self.vida=120
+      else:
+        if comp1<=100:
+          self.vida+=v
+        else:
+          self.vida=100
+    else: # resta vida
+      if comp2<=0:
+        self.vida=0
+      else:
+        self.vida-=v
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
+
+  def m_mana(self,mm,m):# suma mana o resta mana
+    comp1=self.mana+m
+    comp2=self.mana-m
+    if mm==1: # suma mana
+      if self.jugador=="Maga2":
+        if comp1<=20:
+          self.mana+=m
+        else:
+          self.mana=20
+      elif self.jugador=="Caballero2":
+        if comp1<=5:
+          self.mana+=m
+        else:
+          self.mana=5
+      else:
+        if comp1<=10:
+          self.mana+=m
+        else:
+          self.mana=10
+    else: # resta mana
+      if comp2<=0:
+        self.mana=0
+      else:
+        self.mana-=m
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
+
+  def puño(self,enemi,golpe,ju,ene): # depende de funcion: daño
+    if self.per==False:
+      self.per=True
+    else:
+      pass
+    self.daño(enemi,golpe)
+    self.color_v(ju,ene)
+  
+  def daño(self,enemi,golpe):
+    self.vida_enemigo-=golpe
+    if self.vida_enemigo<=0:
+      if enemi== "slime azul":
+        self.oro+=3
+      elif enemi== "slime verde":
+        self.oro+=3
+      elif enemi=="slime rojo":
+        self.oro+=5
+      elif enemi== "lobo":
+        self.oro+=7
+      elif enemi== "lobo alfa":
+        self.oro+=10
+      else:
+        self.oro+=20
+      self.dialogo.config(text="- Victoria")# <----------------------------- por ahora X
+      # self.intermedio() <------------------------------------------------- por ahora X
+    else:
+      if enemi== "slime azul":
+        self.m_vida(0,10)
+      elif enemi== "slime verde":
+        self.m_vida(0,20)
+      elif enemi=="slime rojo":
+        self.m_vida(0,20)
+      elif enemi== "lobo":
+        golpe_ale = random.randint(1, 5)
+        if golpe_ale<=3:
+          self.m_vida(0,10)
+        else:
+          self.m_vida(0,15)
+      elif enemi== "lobo alfa":
+        golpe_ale = random.randint(1, 7)
+        if golpe_ale<=5:
+          self.m_vida(0,15)
+        else:
+          self.m_vida(0,20)
+      else:
+        golpe_ale = random.randint(1, 8)
+        if golpe_ale<=2:
+          self.m_vida(0,10)
+        elif golpe_ale<=6:
+          self.m_vida(0,20)
+        else:
+          self.m_vida(0,25)
+    self.derota()
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
+  
+  def enemigo_ram(self):
+    enemigo_aleatorio = random.randint(1, 100)
+    if 1 <= enemigo_aleatorio <=20:
+      self.vida_enemigo=100
+      return "slime azul"
+    elif 21 <= enemigo_aleatorio <=40:
+      self.vida_enemigo=70
+      return "slime verde"
+    elif 41 <=enemigo_aleatorio <=60:
+      self.vida_enemigo=100
+      return "slime rojo"
+    elif 61 <= enemigo_aleatorio <=75:
+      self.vida_enemigo=80
+      return "lobo"
+    elif 76 <= enemigo_aleatorio <=90:
+      self.vida_enemigo=100
+      return "lobo alfa"
+    else:
+      self.vida_enemigo=110
+      return "duende"
+  
+  def derota(self):
+    if self.vida<=0:
+      self.fin=PhotoImage(file=self.imagen("game_over"))
+      final=Label(self.ventana,image=self.fin,bg="black")
+      final.place(x=249,y=64)
+    else:
+      pass
 
   def pri_ataque(self,q,sli_b,jugad):# primer ataque introductoria (Tutorial)
     self.destructor(q)
@@ -84,8 +311,7 @@ class Eleccion():
     sli_b.config(bg=self.color_e)
     jugad.config(bg=self.color_e)
     self.vida-=30
-    estan=Batallas(self.ventana,self.vida,self.fuerza,self.mana,self.oro) 
-    estan.Actualiza_Est()
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
     intro_flec=Label(self.ventana,text="  <- Toma una poción para recuperarte.",bg="black",fg="white")
     intro_flec.place(x=475,y=404)
     self.dialogo.config(text="- Tras atacar, tambien te han dañado.")
@@ -107,14 +333,13 @@ class Eleccion():
     self.color_j="green"
     jugad.config(bg=self.color_j)
     self.vida+=30
-    estan=Batallas(self.ventana,self.vida,self.fuerza,self.mana,self.oro) 
-    estan.Actualiza_Est()
+    self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
     self.dialogo.config(text="- Intenta escapar (Dependiendo del enemigo habra mas o menos pocibilidades de escapar).")
     self.dialogo.place(x=255,y=360) 
-    escape=Button(self.ventana,text="Escapar",bg="blue",fg="white",command= lambda: self.pri_escape(escape,jugad,sli_b))
+    escape=Button(self.ventana,text="Escapar",bg="blue",fg="white",command= lambda: self.pri_escape_intermedio(escape,jugad,sli_b))
     escape.place(x=530,y=405)
 
-  def pri_escape(self,w,e,r):# Escapar (Tutorial)
+  def pri_escape_intermedio(self,w,e,r):# Escapar (Tutorial)
     self.destructor(w,e,r)
     self.entorno.config(file=self.imagen("intermedio"))
     self.dialogo.config(text="- Por el momento dirigete con el vendedor y compra algunas pociones.")
@@ -186,31 +411,6 @@ class Eleccion():
     bosq=Button(self.ventana,text="Bosque",bg="orange",fg="white",command= lambda: self.batalla(bosq,vende))
     bosq.place(x=315,y=405)
 
-  def batalla(self,q,w):
-    self.destructor(q,w)
-    atac=Button(self.ventana,text="Atacar",bg="red",fg="white")# <----------------comando X
-    atac.place(x=300,y=405) 
-    poci=Button(self.ventana,text="Pociones",bg="green",fg="white")# <----------------comando X
-    poci.place(x=415,y=405)
-    escape=Button(self.ventana,text="Escapar",bg="blue",fg="white")# <----------------comando X
-    escape.place(x=530,y=405)
-    self.entorno.config(file=self.imagen("bosque"))
-    self.ento = Label(self.ventana, image=self.entorno, bg="black")
-    self.ento.place(x=249,y=64)
-
-    self.juga = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\{self.jugador}.png")
-    ju= Label(self.ventana, image=self.juga, bg=self.color_j)
-    ju.place(x=605,y=150)
-    
-    self.color_e="green"
-    estan=Batallas(self.ventana,self.vida,self.fuerza,self.mana,self.oro) 
-    enemi=estan.enemigo_ram()
-    self.dialogo.config(text=f"- Un {enemi} se dispone a pelear. Pelea o huye.")
-    self.sl_1 = PhotoImage(file=self.imagen(enemi))
-    sli_1b = Label(self.ventana, image=self.sl_1, bg=self.color_e)
-    sli_1b.place(x=260,y=150)
-
-  # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   def tr(self,a,s,d): # destrulle al boton, la imagen y el label inicial
     self.destructor(a,s,d)
 
@@ -278,8 +478,7 @@ class Eleccion():
       bo1=Button(self.ventana,text="Intermedio",command=lambda: self.intermedio())
       bo1.place(x=800,y=100)
       self.oro+=90
-      estan=Batallas(self.ventana,self.vida,self.fuerza,self.mana,self.oro)
-      estan.Actualiza_Est()
+      self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
     elif lx>=16:
       pass
     elif lx>=1:
@@ -294,14 +493,13 @@ class Eleccion():
 
     if self.nom and self.per:
        
-      estan=Batallas(self.ventana,self.vida,self.fuerza,self.mana,self.oro) 
-      estan.Actualiza_Est()
+      self.estadisticas.config(text=f" Vida: {self.vida}   Fuerza: {self.fuerza}   Mana: {self.mana}  Oro: {self.oro}")
  
       self.entorno.config(file=self.imagen("bosque"))
       self.ento = Label(self.ventana, image=self.entorno, bg="black")
       self.ento.place(x=249,y=64)
 
-      self.sl_b = PhotoImage(file=self.imagen("slime2"))
+      self.sl_b = PhotoImage(file=self.imagen("slime verde"))
       sli_b = Label(self.ventana, image=self.sl_b, bg=self.color_e)
       sli_b.place(x=260,y=150)
       self.jug = PhotoImage(file=f"C:\\Users\\carlo\\OneDrive\\Escritorio\\aventura\\personaje\\{self.jugador}.png")
@@ -322,8 +520,8 @@ class Eleccion():
       per_elejido=Label(self.ventana,text="/ Mago",bg="black",fg="white")
       per_elejido.place(x=120,y=12)
       self.vida+=90
-      self.fuerza+=15  # se cambian visa,fuerza,mana, self.per se buelbe True y self.jugador el nombre de la imagen del personaje
-      self.mana+=25
+      self.fuerza+=20  # se cambian visa,fuerza,mana, self.per se buelbe True y self.jugador el nombre de la imagen del personaje
+      self.mana+=20
       self.per=True
       self.jugador="Maga2"
      
@@ -331,7 +529,7 @@ class Eleccion():
       per_elejido=Label(self.ventana,text="/ Caballero",bg="black",fg="white")
       per_elejido.place(x=120,y=12)
       self.vida+=120
-      self.fuerza=+50
+      self.fuerza=+40
       self.mana+=5
       self.per=True
       self.jugador="Caballero2"

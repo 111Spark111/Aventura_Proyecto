@@ -19,7 +19,7 @@ def pantalla():
     fondos=OptionMenu(ventana,op,*elecciones,command= lambda fon:List_fondos.fondos(fon))
     fondos.place(x=895,y=8)
     
-    Botones=Eleccion(ventana)# _________________________________________________Instancia de la clase Elección_____________________________________________________________
+    Botones=Elección(ventana)# _________________________________________________Instancia de la clase Elección_____________________________________________________________
 
     #Trasfondo
     iniciacion0_0=Label(ventana,text="- En tierras lejanas donde los héroes y monstruos abundan, un grupo de amigos se reúne\ncon el deseo de ser aventureros. Explorando los bosques y derrotando monstruos.       ",bg="black",fg="white")
